@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
+interface RowData {
+  [key: string]: string | number | null;
+}
+
+interface TableData extends Array<RowData> { }
+
+interface FetchResponse {
+  table: {
+    cols: { label: string }[];
+    rows: { c: { v: string | number | null }[] }[];
+  };
+}
+
 const sheetId = '1tpro_CKqYAtnCmY0OjjXWpt16aa3t-Zc28Tuxi4MMyE';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 
 function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<TableData>([]);
 
   const query = encodeURIComponent('Select *');
   const encodedSheetName = encodeURIComponent(sheetName);
@@ -18,15 +31,15 @@ function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
     fetch(url)
       .then(res => res.text())
       .then(rep => {
-        const jsonData = JSON.parse(rep.substring(47).slice(0, -2));
+        const jsonData: FetchResponse = JSON.parse(rep.substring(47).slice(0, -2));
         const extractedData = jsonData.table.rows.map(row => {
-          const rowData = {};
+          const rowData: RowData = {};
           row.c.forEach((cell, index) => {
             const columnName = jsonData.table.cols[index].label;
-            if (columnName !== 'styles') { // Exclude styles column
-              rowData[columnName] = cell && cell.v ? formatValue(cell.v) : ''; // Extract and format cell value
+            if (columnName !== 'styles') {
+              rowData[columnName] = cell?.v ? formatValue(cell.v) : '';
             } else {
-              rowData[columnName] = cell && cell.v ? cell.v : null; // Include styles column
+              rowData[columnName] = cell?.v ? cell.v : null;
             }
           });
           return rowData;
@@ -36,16 +49,15 @@ function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
       .catch(error => console.error('Error fetching data:', error));
   };
 
-  // Function to format numeric values with two decimal places if it has a decimal part
-  const formatValue = (value) => {
+  const formatValue = (value: string | number | null): string => {
     if (typeof value === 'number') {
       return Number.isInteger(value) ? value.toString() : value.toFixed(2);
     }
-    return value;
+    return value !== null ? value.toString() : '';
   };
 
-  const getRowClass = (rowData) => {
-    return rowData.styles ? rowData.styles : '';
+  const getRowClass = (rowData: RowData): string => {
+    return rowData.styles ? rowData.styles.toString() : '';
   };
 
   return (
@@ -60,10 +72,9 @@ function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={rowIndex} className={getRowClass(row)}>
+            <tr key={row.uniqueId} className={getRowClass(row)}>
               {Object.keys(row).filter(key => key !== 'styles').map((key, columnIndex) => (
-                // Add colSpan attribute to the first cell if styles contain "subtitle"
-                <td key={columnIndex} colSpan={getRowClass(row) === 'subtitle' && columnIndex === 0 ? Object.keys(row).length - 1 : 1}>{row[key]}</td>
+                <td key={`${rowIndex}-${key}`} colSpan={getRowClass(row) === 'subtitle' && columnIndex === 0 ? Object.keys(row).length - 1 : 1}>{row[key]}</td>
               ))}
             </tr>
           ))}
