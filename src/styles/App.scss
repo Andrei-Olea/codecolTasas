@@ -1,0 +1,108 @@
+@use "sass:color";
+@use "./settings/variables" as *;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+  display: block;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  background: #e9ebd9;
+  padding: 1em;
+}
+
+h2 {
+  font-size: 1.8em;
+  color: $green;
+  font-weight: 700;
+}
+
+@mixin tablaStyles($maincolor, $linea) {
+  margin-bottom: 2em;
+
+  h3 {
+    font-size: clamp(1rem, 5vw, 1.2rem);
+    font-weight: 700;
+    color: $maincolor;
+  }
+
+  .bold {
+    color: white;
+    background: $maincolor;
+    box-shadow: 0.2em 0.2em 0.2em rgba(0, 0, 0, 0.6);
+    border: 2px solid white;
+
+    td:not(:first-child) {
+      font-weight: 800;
+    }
+  }
+
+  table {
+    display: flex;
+    flex-direction: column;
+
+    tr {
+      display: flex;
+      margin-block: 0.2em;
+      background: #f7f6f1;
+      padding: 0 0.2em;
+
+      td,
+      th {
+        flex: 1;
+        text-align: center;
+
+        &:first-child {
+          flex: 0 1 50%;
+          text-align: left;
+        }
+      }
+
+      // if $linea == credito if not then dont render
+
+      @if ($linea == "credito") {
+        td:not(:first-child):not(:nth-child(2)) {
+          &::after {
+            content: "%";
+          }
+        }
+      } @else {
+        td:not(:first-child) {
+          &::after {
+            content: "%";
+          }
+        }
+      }
+
+      &.subtitle {
+        background: none;
+
+        td {
+          flex: 0 1 100%;
+          font-size: 1.2em;
+
+          &:not(:first-child) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    thead {
+      tr {
+        background: $maincolor;
+        color: white;
+      }
+    }
+  }
+}
+
+.tabla-credito {
+  @include tablaStyles(color.adjust($yellow-codecol, $lightness: -10%), "credito");
+}
+
+.tabla-ahorro {
+  @include tablaStyles($red-codecol, "ahorro");
+}

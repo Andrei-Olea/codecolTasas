@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import '../styles/App.css'
+
 
 import SpreadsheetFetcher from '../components/SpreadsheetFetcher'
 
@@ -7,8 +6,16 @@ function Credito() {
 
   return (
     <>
-      <h1>Tasas Credito</h1>
-      <SpreadsheetFetcher />
+      <h2>Porfatolio Credito</h2>
+      <div className='tabla-credito'>
+        <h3>Creditos Vivienda</h3>
+        <SpreadsheetFetcher sheetName='Creditos Vivienda' />
+      </div>
+
+      <div className='tabla-credito'>
+        <h3>Creditos Consumo</h3>
+        <SpreadsheetFetcher sheetName='Creditos Consumo' />
+      </div>
     </>
   )
 }

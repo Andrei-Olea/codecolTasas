@@ -6,8 +6,7 @@ import Credito from './pages/Credito.tsx'
 import Ahorro from './pages/Ahorro.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 
-
-import './styles/index.css'
+import './styles/App.scss'
 
 const router = createBrowserRouter([
   {
