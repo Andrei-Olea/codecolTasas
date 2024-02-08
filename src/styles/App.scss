@@ -105,6 +105,11 @@ h2 {
 
 .tabla-ahorro {
   @include tablaStyles($red-codecol, "ahorro");
+
+  th:first-child,
+  td:first-child {
+    text-align: center !important;
+  }
 }
 
 h4 {
