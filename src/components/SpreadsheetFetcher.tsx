@@ -13,7 +13,8 @@ interface FetchResponse {
   };
 }
 
-const sheetId = '1tpro_CKqYAtnCmY0OjjXWpt16aa3t-Zc28Tuxi4MMyE';
+const sheetId = import.meta.env.VITE_GOOGLE_SHEET_ID;
+
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 
 function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
