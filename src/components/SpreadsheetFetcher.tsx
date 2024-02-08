@@ -37,7 +37,7 @@ function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
           const rowData: RowData = {};
           row.c.forEach((cell, index) => {
             const columnName = jsonData.table.cols[index].label;
-            if (columnName !== 'styles') {
+            if (columnName !== 'styles' && columnName.toLowerCase().includes('tasa')) {
               rowData[columnName] = cell?.v ? formatValue(cell.v) : '';
             } else {
               rowData[columnName] = cell?.v ? cell.v : null;
@@ -52,7 +52,7 @@ function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
 
   const formatValue = (value: string | number | null): string => {
     if (typeof value === 'number') {
-      return Number.isInteger(value) ? value.toString() : value.toFixed(2);
+      return value.toFixed(2);
     }
     return value !== null ? value.toString() : '';
   };
@@ -73,9 +73,11 @@ function SpreadsheetFetcher({ sheetName }: { sheetName: string }) {
         </thead>
         <tbody>
           {data.map((row, rowIndex) => (
-            <tr key={row.uniqueId} className={getRowClass(row)}>
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            <tr key={rowIndex} className={getRowClass(row)}>
               {Object.keys(row).filter(key => key !== 'styles').map((key, columnIndex) => (
-                <td key={`${rowIndex}-${key}`} colSpan={getRowClass(row) === 'subtitle' && columnIndex === 0 ? Object.keys(row).length - 1 : 1}>{row[key]}</td>
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <td key={columnIndex} colSpan={getRowClass(row) === 'subtitle' && columnIndex === 0 ? Object.keys(row).length - 1 : 1}>{row[key]}</td>
               ))}
             </tr>
           ))}
