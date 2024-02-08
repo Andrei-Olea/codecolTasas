@@ -16,6 +16,11 @@ function Credito() {
         <h3>Creditos Consumo</h3>
         <SpreadsheetFetcher sheetName='Creditos Consumo' />
       </div>
+
+      <div className='tabla-credito'>
+        <h3>Tasas Mora</h3>
+        <SpreadsheetFetcher sheetName='Tasas Mora' />
+      </div>
     </>
   )
 }
