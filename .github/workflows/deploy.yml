@@ -20,9 +20,8 @@ concurrency:
   group: 'pages'
   cancel-in-progress: true
 
-#Allow repo secrets
-env:
-VITE_GOOGLE_SHEET_ID: ${{ secrets.VITE_GOOGLE_SHEET_ID }}
+# Allow repo secrets
+env: VITE_GOOGLE_SHEET_ID: ${{ secrets.VITE_GOOGLE_SHEET_ID }}
 
 jobs:
   # Single deploy job since we're just deploying
