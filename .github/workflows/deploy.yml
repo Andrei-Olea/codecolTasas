@@ -21,7 +21,8 @@ concurrency:
   cancel-in-progress: true
 
 # Allow repo secrets
-env: VITE_GOOGLE_SHEET_ID: ${{ secrets.VITE_GOOGLE_SHEET_ID }}
+env:
+  VITE_GOOGLE_SHEET_ID: ${{ secrets.VITE_GOOGLE_SHEET_ID }}
 
 jobs:
   # Single deploy job since we're just deploying
