@@ -17,7 +17,7 @@ function Credito() {
         <SpreadsheetFetcher sheetName='Creditos Consumo' />
       </div>
 
-      <div className='tabla-credito'>
+      <div className='tabla-credito tasas-mora'>
         <SpreadsheetFetcher sheetName='Tasas Mora' />
       </div>
     </>

@@ -101,6 +101,14 @@ h2 {
 
 .tabla-credito {
   @include tablaStyles(color.adjust($yellow-codecol, $lightness: -10%), "credito");
+
+  &.tasas-mora {
+    td:nth-child(2) {
+      &::after {
+        content: "%";
+      }
+    }
+  }
 }
 
 .tabla-ahorro {
